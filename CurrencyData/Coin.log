@@ -1,0 +1,71 @@
+2016-01-23 14:03 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 64, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 82, in Monitor
+    coinsHistory = priceUpdater.InitCoinsHistory(num, prices)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/DataKeeper.py", line 33, in InitCoinsHistory
+    ConsoleUtilities.WriteLine('Wrote header: ' + rows)
+TypeError: Can't convert 'list' object to str implicitly
+"
+2016-01-23 14:20 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"
+2016-01-23 14:20 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 63, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 81, in Monitor
+    coinsHistory = priceUpdater.InitCoinsHistory(num, prices)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/DataKeeper.py", line 51, in InitCoinsHistory
+    head = [data[idx][0]] * dif
+IndexError: list index out of range
+"
+2016-01-23 14:23 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"
+2016-01-23 14:23 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 63, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 81, in Monitor
+    coinsHistory = priceUpdater.InitCoinsHistory(num, prices)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/DataKeeper.py", line 51, in InitCoinsHistory
+    head = [data[idx][0]] * dif
+IndexError: list index out of range
+"
+2016-01-23 14:27 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/httplib2-0.9.2-py3.5.egg/httplib2/__init__.py", line 987, in _conn_request
+    conn.connect()
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/http/client.py", line 826, in connect
+    (self.host,self.port), self.timeout, self.source_address)
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/socket.py", line 693, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/socket.py", line 732, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 63, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 75, in Monitor
+    coins = list(map(lambda coin : CurrencyQuery(coin), COINS));
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 75, in <lambda>
+    coins = list(map(lambda coin : CurrencyQuery(coin), COINS));
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 119, in __init__
+    self.Refresh()
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 125, in Refresh
+    self.resp, content = httplib2.Http().request(self.url)
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/httplib2-0.9.2-py3.5.egg/httplib2/__init__.py", line 1314, in request
+    (response, content) = self._request(conn, authority, uri, request_uri, method, body, headers, redirections, cachekey)
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/httplib2-0.9.2-py3.5.egg/httplib2/__init__.py", line 1064, in _request
+    (response, content) = self._conn_request(conn, request_uri, method, body, headers)
+  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/httplib2-0.9.2-py3.5.egg/httplib2/__init__.py", line 994, in _conn_request
+    raise ServerNotFoundError("Unable to find the server at %s" % conn.host)
+httplib2.ServerNotFoundError: Unable to find the server at coinmarketcap-nexuist.rhcloud.com
+"
+2016-01-23 14:30 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"
+2016-01-23 14:30 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 63, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 81, in Monitor
+    coinsHistory = priceUpdater.InitCoinsHistory(num, prices)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/DataKeeper.py", line 51, in InitCoinsHistory
+    head.extend(data[idx])
+IndexError: list index out of range
+"
