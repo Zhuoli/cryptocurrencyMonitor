@@ -69,3 +69,16 @@ httplib2.ServerNotFoundError: Unable to find the server at coinmarketcap-nexuist
     head.extend(data[idx])
 IndexError: list index out of range
 "
+2016-01-23 15:23 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"
+2016-01-23 15:23 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 63, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 81, in Monitor
+    coinsHistory = priceUpdater.InitCoinsHistory(num, prices)
+  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/DataKeeper.py", line 82, in InitCoinsHistory
+    head = [priceArray[idx][0]] * dif
+IndexError: list index out of range
+"
+2016-01-23 15:26 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"
+2016-01-23 15:27 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"
+2016-01-23 15:31 : "Invalid col format: DateBitCoin price $LiteCoin price $DOGECOIN price $"

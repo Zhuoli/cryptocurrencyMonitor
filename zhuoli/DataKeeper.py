@@ -20,7 +20,9 @@ class DataKeeper:
         self.filename = path
         self.coinnames = coinnames
         
-    def InitCoinsHistory(self, nums, prices):
+    def InitCoinsHistory(self, numberOfRowsForAnalysis, prices):
+
+        numberOfRowsForAnalysis = int(numberOfRowsForAnalysis)
 
         # Create csv file and write priceArray if it doesn't exist
         if not os.path.isfile(self.filename):
@@ -38,15 +40,21 @@ class DataKeeper:
                 ConsoleUtilities.WriteLine('Wrote header: ' + rows)
 
             # Return price array with the given price
-            return [[price] * nums for price in prices]
+            return [[price] * numberOfRowsForAnalysis for price in prices]
         else:
 
             # If priceArray exists, read from csv file
             ConsoleUtilities.WriteLine('Data exists, reading priceArray from csv...')
 
             # Price array,
-            # e.g: [BitCoin, LiteCoin, DogCoin] -> [[356.0,390.4, 420.5], [3.5, 3.4, 3.8], [0.00012, 0.00013, 0.00018]]
-            priceArray = [[] for price in prices]
+            # e.g: [BitCoin, LiteCoin, DogCoin]
+            # ->
+            # [
+            #  [356.0,    390.4,   420.5],
+            #  [  3.5,      3.4,     3.8],
+            #  [0.0012, 0.00013, 0.00018]
+            # ]
+            price2DArray = [[] for price in prices]
 
             # Open csv file
             with open(self.filename,'r') as csvfile:
@@ -54,32 +62,56 @@ class DataKeeper:
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
                 # Feed price cols
-                for cols in reader:
+                for csvRow in reader:
                     try:
-                        cols = list(map(lambda x: float(x), cols[1:]))
-                        for idx in range(len(cols)):
-                            priceArray[idx].append(cols[idx])
-                    except ValueError:
-                        Log("Invalid col format: " + "".join(cols))
-            if len(priceArray[0]) < nums:
-                for idx in range(len(prices)):
-                    dif = nums - len(priceArray[idx])
-                    head = [priceArray[idx][0]] * dif
-                    head.extend(priceArray[idx])
-                    priceArray[idx] = head
-            elif len(priceArray[0]) > nums:
-                diff = int(len(priceArray[0]) - nums)
-                for idx in range(len(cols)):
-                    priceArray[idx] = priceArray[idx][diff:]
-            return priceArray;
+                        # Remove the date col and convert string to float
+                        csvRow = list(map(lambda x: float(x), csvRow[1:]))
 
+                        # Append the currency price
+                        for idx in range(len(csvRow)):
+                            price2DArray[idx].append(csvRow[idx])
+                    except ValueError:
+                        Log("Invalid col format: " + "".join(csvRow))
+
+            price2DArray = self.FillTheMissingCurrencyArray(price2DArray, numberOfRowsForAnalysis, prices)
+            return price2DArray;
+
+    # Clean up the 2D currency array
+    def FillTheMissingCurrencyArray(self, priceArray, numberOfRowsForAnalysis, currentPrices):
+
+        # If the price 2D array doesn't contain enough records for analysis, we fill it with current price
+        if len(priceArray[0]) < numberOfRowsForAnalysis:
+
+            # Iterate each currency
+            for idx in range(len(currentPrices)):
+                dif = numberOfRowsForAnalysis - len(priceArray[idx])
+                head = [currentPrices[idx]] * dif
+                head.extend(priceArray[idx])
+                priceArray[idx] = head
+
+        # If the price 2D array exceed the number of rows for analysis, we truncate it
+        elif len(priceArray[0]) > numberOfRowsForAnalysis:
+            diff = int(len(priceArray[0]) - numberOfRowsForAnalysis)
+            for idx in range(len(currentPrices)):
+                priceArray[idx] = priceArray[idx][diff:]
+        return priceArray;
+
+    # Write the coin price row to CSV file
     def LogPrice(self, coinprices):
+
+        # Append current time
         time = str(datetime.datetime.now())
+
+        # Trim
         secondIndex = time.rfind(':')
         time = time[:secondIndex]
         rows = [time]
+
+        # Combine time and prices
         rows.extend(coinprices)
         ConsoleUtilities.WriteLine(tuple(rows))
+
+        # Write
         with open(self.filename, 'a+') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=',',
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
