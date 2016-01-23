@@ -3,10 +3,15 @@ Created on Nov 8, 2015
 
 @author: zhuoli
 '''
-import os.path
 import csv
 import datetime
+import os.path
+
+import ConsoleUtilities
 from Errors import Log
+
+
+# Read Write Currency price history from/to disk
 class DataKeeper:
     
     DELIMITER = ','
@@ -25,18 +30,17 @@ class DataKeeper:
                 writer = csv.writer(csvfile, delimiter= DataKeeper.DELIMITER,
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 writer.writerow(rows)
-                print 'Wrote header: ',
-                print rows 
+                ConsoleUtilities.WriteLine('Wrote header: ' + rows) 
             return [[price] * nums for price in prices]
         else:
-            print 'Data exists, reading data from csv...'
+            ConsoleUtilities.WriteLine('Data exists, reading data from csv...')
             data = [[] for price in prices]
             with open(self.filename,'r') as csvfile:
                 reader = csv.reader(csvfile, delimiter= DataKeeper.DELIMITER,
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for cols in reader:
                     try:
-                        cols = map(lambda x: float(x), cols[1:])
+                        cols = list(map(lambda x: float(x), cols[1:]))
                         for idx in range(len(cols)):
                             data[idx].append(cols[idx])
                     except ValueError:
@@ -48,7 +52,7 @@ class DataKeeper:
                     head.extend(data[idx])
                     data[idx] = head
             elif len(data[0]) > nums:
-                diff = len(data[0]) - nums
+                diff = int(len(data[0]) - nums)
                 for idx in range(len(cols)):
                     data[idx] = data[idx][diff:]
             return data;
@@ -59,7 +63,7 @@ class DataKeeper:
         time = time[:secondIndex]
         rows = [time]
         rows.extend(coinprices)
-        print rows
+        ConsoleUtilities.WriteLine(tuple(rows))
         with open(self.filename, 'a+') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=',',
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)

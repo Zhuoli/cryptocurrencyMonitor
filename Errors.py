@@ -3,9 +3,11 @@ Created on Nov 8, 2015
 
 @author: zhuoli
 '''
-import os
 import datetime
+import os
+
 import Constant
+
 
 LOG_PATH = Constant.DATA_ROOT + "/Coin.log"
 def AssertEqual(a, b):

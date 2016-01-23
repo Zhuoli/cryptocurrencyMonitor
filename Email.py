@@ -3,9 +3,13 @@ Created on Nov 8, 2015
 
 @author: zhuoli
 '''
-import smtplib
 import email
-from email.MIMEText import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+
+import ConsoleUtilities
+
 
 class Email:
     
@@ -24,10 +28,11 @@ class Email:
         
         FROM = self.gmail_user
         TO = recipient if type(recipient) is list else [recipient]
+        COMMASPACE = ', '
         
-        msg = email.MIMEMultipart.MIMEMultipart()
+        msg = MIMEMultipart()
         msg['From'] = self.gmail_user
-        msg['To'] = email.Utils.COMMASPACE.join(TO)
+        msg['To'] = COMMASPACE.join(TO)
         msg['Subject'] = subject  
         msg.attach(MIMEText(body))
         msg.attach(MIMEText('\n More price here: http://coinmarketcap.com/currencies/views/all/', 'plain'))
@@ -41,6 +46,8 @@ class Email:
             server_ssl.sendmail(FROM, TO, msg.as_string())
             #server_ssl.quit()
             server_ssl.close()
-            print 'successfully sent the mail'
+            ConsoleUtilities.WriteLine('successfully sent the mail')
         except:
-            print 'failed send the mail'
+            ConsoleUtilities.WriteLine('failed send the mail')
+            
+            
