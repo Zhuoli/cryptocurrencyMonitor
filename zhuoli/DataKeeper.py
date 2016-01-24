@@ -19,10 +19,24 @@ class DataKeeper:
     def __init__(self, coinnames, path):
         self.filename = path
         self.coinnames = coinnames
-        
+
+
+    # Initit coins history
+    # Return price 2D array,
+    # e.g:
+    # Price array,
+    # e.g: [BitCoin, LiteCoin, DogCoin]
+    # ->
+    # [
+    #  [356.0,    390.4,   420.5],
+    #  [  3.5,      3.4,     3.8],
+    #  [0.0012, 0.00013, 0.00018]
+    # ]
     def InitCoinsHistory(self, numberOfRowsForAnalysis, prices):
 
         numberOfRowsForAnalysis = int(numberOfRowsForAnalysis)
+
+        dateArray = []
 
         # Create csv file and write priceArray if it doesn't exist
         if not os.path.isfile(self.filename):
@@ -65,16 +79,18 @@ class DataKeeper:
                 for csvRow in reader:
                     try:
                         # Remove the date col and convert string to float
-                        csvRow = list(map(lambda x: float(x), csvRow[1:]))
+                        priceRow = list(map(lambda x: float(x), csvRow[1:]))
+
+                        # Record this date
+                        dateArray.append(csvRow[0])
 
                         # Append the currency price
-                        for idx in range(len(csvRow)):
-                            price2DArray[idx].append(csvRow[idx])
+                        for idx in range(len(priceRow)):
+                            price2DArray[idx].append(priceRow[idx])
                     except ValueError:
                         Log("Invalid col format: " + "".join(csvRow))
 
-            price2DArray = self.FillTheMissingCurrencyArray(price2DArray, numberOfRowsForAnalysis, prices)
-            return price2DArray;
+            return price2DArray, dateArray;
 
     # Clean up the 2D currency array
     def FillTheMissingCurrencyArray(self, priceArray, numberOfRowsForAnalysis, currentPrices):

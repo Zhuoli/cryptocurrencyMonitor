@@ -12,12 +12,18 @@ import ConsoleUtilities
 
 
 class Email:
-    
+
+    DEBUG = False;
+
     def __init__(self, gmail_user, gmail_pwd):
         self.gmail_user = gmail_user
         self.gmail_pwd = gmail_pwd
          
     def Authenticate(self):
+
+        if Email.DEBUG:
+            return
+
          # Authenticate
         server_ssl = smtplib.SMTP_SSL("smtp.gmail.com", 465)
         server_ssl.ehlo() # optional, called by login()
@@ -25,7 +31,10 @@ class Email:
         server_ssl.close()
 
     def send_email(self,recipient, subject, body):
-        
+
+        if Email.DEBUG:
+            return
+
         FROM = self.gmail_user
         TO = recipient if type(recipient) is list else [recipient]
         COMMASPACE = ', '
