@@ -8,20 +8,20 @@ import datetime
 # Represents an digit currency
 class Currency:
 
-    def __init__(self, NameUrlPairs, name, priceArrayPair):
+    def __init__(self, currencyQuery, dateArray, priceArray):
 
-        self.name = name
-        self.currencyQuery = CurrencyQuery((name,NameUrlPairs[name]))
-        Errors.AssertEqual(len(priceArrayPair[0]), len(priceArrayPair[1]))
+        self.name = currencyQuery.name
+        self.currencyQuery = currencyQuery
+        Errors.AssertEqual(len(dateArray), len(priceArray))
 
         # e.g:
         # [
         #   ['2015.11.12', '2015.11.13', '2015.11.14'],
         #   [        3.5,          4.5,          4.7]
         # ]
-        self.datePricePairs = [priceArrayPair[0], priceArrayPair[1]]
-        self.priceArray = self.datePricePairs[1]
-        self.dateArray  = self.datePricePairs[0]
+        self.datePricePairs = [dateArray, priceArray]
+        self.priceArray =  priceArray
+        self.dateArray  = dateArray
         self.latestPrice = self.currencyQuery.GetPrice();
 
     def UpdatePrice(self):
@@ -48,28 +48,25 @@ class Currency:
 
 #Coin object
 class CurrencyQuery:
-    def __init__(self, seed):
-        Errors.AssertEqual(len(seed), 2)
-        self.NameUrlPair = seed;
-        self.name = self.NameUrlPair[0]
-        self.url=self.NameUrlPair[1]
+    def __init__(self, name, url):
+        self.name = name
+        self.url = url
         self.Refresh()
+        self.queryContent = ""
+        self.USD = 0
 
     # Refresh, this call will lead to a network communication to:
     # 'http://coinmarketcap-nexuist.rhcloud.com/api'
     def Refresh(self):
-        self.resp, content = httplib2.Http().request(self.url)
-        self.content = content.decode('ascii')
-        self.OK = self.resp['status'] == '200'
-        if self.OK:
-            js = json.loads(self.content)
+        resp, content = httplib2.Http().request(self.url)
+        self.queryContent = content.decode('ascii')
+        isOK = resp['status'] == '200'
+        if isOK:
+            js = json.loads(self.queryContent)
             self.USD = float(js['usd'])
         else:
             self.USD = 0
 
     # Return price
     def GetPrice(self):
-        if self.OK:
-            return self.USD
-        else:
-            raise Exception('Failed query with state code: ' + self.resp['status'])
+        return self.USD

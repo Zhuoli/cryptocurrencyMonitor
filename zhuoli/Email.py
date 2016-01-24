@@ -13,7 +13,7 @@ import ConsoleUtilities
 
 class Email:
 
-    DEBUG = False;
+    DEBUG = True;
 
     def __init__(self, gmail_user, gmail_pwd):
         self.gmail_user = gmail_user

@@ -9,6 +9,7 @@ import os.path
 
 import ConsoleUtilities
 from Errors import Log
+from Currency import Currency
 
 
 # Read Write Currency price history from/to disk
@@ -51,7 +52,7 @@ class DataKeeper:
                 writer = csv.writer(csvfile, delimiter= DataKeeper.DELIMITER,
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 writer.writerow(rows)
-                ConsoleUtilities.WriteLine('Wrote header: ' + rows)
+                ConsoleUtilities.WriteLine('Wrote header: ' + "".join(rows))
 
             # Return price array with the given price
             return [[price] * numberOfRowsForAnalysis for price in prices]
@@ -113,7 +114,11 @@ class DataKeeper:
         return priceArray;
 
     # Write the coin price row to CSV file
-    def LogPrice(self, coinprices):
+    def LogPrice(self, currencyList):
+
+        prices = []
+        for currencyInstance in currencyList:
+            prices.append(currencyInstance.latestPrice)
 
         # Append current time
         time = str(datetime.datetime.now())
@@ -124,7 +129,7 @@ class DataKeeper:
         rows = [time]
 
         # Combine time and prices
-        rows.extend(coinprices)
+        rows.extend(prices)
         ConsoleUtilities.WriteLine(tuple(rows))
 
         # Write

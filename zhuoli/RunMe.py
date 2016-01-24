@@ -11,8 +11,6 @@ import time
 import  datetime
 import traceback
 
-import httplib2
-
 import ConsoleUtilities
 import Constant
 from DataKeeper import DataKeeper
@@ -47,7 +45,7 @@ SELLPRICE = {
 }
 
 RECIPIENT = 'zhuoliseattle@gmail.com'
-SLEEP_SECONDS = 10 * 60 # Refresh price interval
+SLEEP_SECONDS = 3 #10 * 60 # Refresh price interval
 HOUR = 8 # Monitor interval
 MONITOR_WINDOW = HOUR * 60 * 60 # 1 hours monitor history
 
@@ -64,8 +62,6 @@ OSCILLATION_ALERT_THRESHOLD = 0.1
 EMAIL_INTERVAL = 30 * 60 # 30 minutes
 
 def main():
-
-    LastTimeSendEmail = datetime.datetime.min
 
     # Create data folder
     if not os.path.exists(Constant.DATA_ROOT):
@@ -101,12 +97,15 @@ def Monitor(email):
     num = int(MONITOR_WINDOW / SLEEP_SECONDS);
     
     #Currency Object Init
-    coins = []
-    for coinPair in COINS.items():
-        coins.append(CurrencyQuery(coinPair))
 
-    coinnames = list(map(lambda coin : coin.name, coins))
-    map(lambda coin : coin.Refresh(), coins)
+    coinnames = [BITCOIN, LITECOIN, DOGECOIN]
+
+    # Init coin instances
+    coins = [
+        CurrencyQuery(BITCOIN, COINS[BITCOIN]),
+        CurrencyQuery(LITECOIN, COINS[LITECOIN]),
+        CurrencyQuery(DOGECOIN, COINS[DOGECOIN])
+    ]
 
     # Retrieve current coin price from APIs
     prices = list(map(lambda coin : coin.GetPrice(), coins)) 
@@ -115,19 +114,15 @@ def Monitor(email):
     CSVReader = DataKeeper(coinnames, DATA_PATH)
     coinsHistoryArray, dateArray = CSVReader.InitCoinsHistory(num, prices)
 
-    currencyList = []
-    for idx in range(len(coinnames)):
-        currencyList.append(Currency(COINS, coinnames[idx], (dateArray, coinsHistoryArray[idx])))
+    currencyList = [
 
+        Currency(coins[0], dateArray, coinsHistoryArray[0]),
+        Currency(coins[1], dateArray, coinsHistoryArray[1]),
+        Currency(coins[2], dateArray, coinsHistoryArray[2])
+    ]
 
     DailyEmailDate = datetime.datetime.min
     while True:
-
-        # Analysis
-        for currencyInstance in currencyList:
-
-            # update coin price
-            currencyInstance.UpdatePrice();
 
         # Daily Price email
         if DailyEmailDate.day != datetime.datetime.now().day:
@@ -137,35 +132,33 @@ def Monitor(email):
                 body += '\n' + currencyInstance.name + " : " + str(currencyInstance.latestPrice)
             email.send_email(RECIPIENT, "Daily Price Report", body)
 
+        # Analysis
+        for currencyInstance in currencyList:
+
+            # update coin price
+            currencyInstance.UpdatePrice();
+            rate = (currencyInstance.priceArray[-1] - currencyInstance.priceArray[0]) / (0.01 + currencyInstance.priceArray[0])
+
+            if rate >= 0.05:
+                body = ""+currencyInstance.name+" has increased upto " + str(rate * 100) + "% in the past " + str(HOUR) +" hour: $" + str(currencyInstance.priceArray[0]) + "-> $" + str(currencyInstance.latestPrice);
+                email.send_email(RECIPIENT, currencyInstance.name + ' price increased ' + "%.3f" % (rate*100) + '%', body)
+            elif rate <=-0.05:
+                body = ""+currencyInstance.name+" has dropped downto " + str(rate * 100) + "% in the past " + str(HOUR) +" hour: $" + str(currencyInstance.priceArray[0]) + "-> $" + str(currencyInstance.latestPrice);
+                email.send_email(RECIPIENT, currencyInstance.name + ' price dropped '  + "%.3f" % (rate*100) + '%', body)
+
+            osciliationRate = (max(currencyInstance.priceArray) - min(currencyInstance.priceArray)) / (0.01 + min(currencyInstance.priceArray))
+            if  osciliationRate > OSCILLATION_ALERT_THRESHOLD:
+                body = ""+currencyInstance.name + " has  oscillated over " + str(osciliationRate*100) + " in the past " + str(HOUR) +" hour" + str(min(currencyInstance.priceArray)) + "->$" + str(max(currencyInstance.priceArray));
+                email.send_email(RECIPIENT, currencyInstance.name + ' price oscillated over ' + "%.3f" % (osciliationRate*100) + "%", body)
         # Suggest to sell
 
 
         # Suggest to buy
 
 
-        # Analysis
-        for i in range(len(coinsHistoryArray)):
-            queue = coinsHistoryArray[i]
-            queue.pop(0)
-            queue.append(coins[i].GetPrice())
-            rate = (queue[-1] - queue[0]) / (0.01+queue[0])
-            if rate >= 0.05:
-                coin = coins[i]
-                body = ""+coin.name+" has increased upto " + str(rate * 100) + "% in the past " + str(HOUR) +" hour: $" + str(queue[0]) + "-> $" + str(queue[-1]);
-                email.send_email(RECIPIENT, coin.name + ' price increased ' + "%.3f" % (rate*100) + '%', body)
-            elif rate <=-0.05:
-                coin = coins[i]
-                body = ""+coin.name+" has dropped downto " + str(rate * 100) + "% in the past " + str(HOUR) +" hour: $" + str(queue[0]) + "-> $" + str(queue[-1]);
-                email.send_email(RECIPIENT, coin.name + ' price dropped '  + "%.3f" % (rate*100) + '%', body)
-            
-            osciliationRate = (max(queue) - min(queue)) / (0.01 + min(queue))
-            if  osciliationRate > OSCILLATION_ALERT_THRESHOLD:
-                coin = coins[i]
-                body = ""+coin.name + " has  oscillated over " + str(osciliationRate*100) + " in the past " + str(HOUR) +" hour" + str(min(queue)) + "->$" + str(max(queue));
-                email.send_email(RECIPIENT, coin.name + ' price oscillated over ' + "%.3f" % (osciliationRate*100) + "%", body)
-        
+
         # Log price
-        CSVReader.LogPrice(map(lambda coin: coin.GetPrice(), coins))
+        CSVReader.LogPrice(currencyList)
         time.sleep(SLEEP_SECONDS)
 
 if __name__ == "__main__":
