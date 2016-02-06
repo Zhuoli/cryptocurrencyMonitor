@@ -97,18 +97,17 @@ def Monitor(email):
     num = int(MONITOR_WINDOW / SLEEP_SECONDS);
     
     #Currency Object Init
-
     coinnames = [BITCOIN, LITECOIN, DOGECOIN]
 
-    # Init coin instances
-    coins = [
+    # Init coin querry instances
+    coinQuerryArray = [
         CurrencyQuery(BITCOIN, COINS[BITCOIN]),
         CurrencyQuery(LITECOIN, COINS[LITECOIN]),
         CurrencyQuery(DOGECOIN, COINS[DOGECOIN])
     ]
 
-    # Retrieve current coin price from APIs
-    prices = list(map(lambda coin : coin.GetPrice(), coins)) 
+    # Querry current coin price from APIs
+    prices = list(map(lambda querry : querry.GetPrice(), coinQuerryArray)) 
 
     # Retrieve history coin price from disk csv file
     CSVReader = DataKeeper(coinnames, DATA_PATH)
@@ -116,9 +115,9 @@ def Monitor(email):
 
     currencyList = [
 
-        Currency(coins[0], dateArray, coinsHistoryArray[0]),
-        Currency(coins[1], dateArray, coinsHistoryArray[1]),
-        Currency(coins[2], dateArray, coinsHistoryArray[2])
+        Currency(coinQuerryArray[0], dateArray, coinsHistoryArray[0]),
+        Currency(coinQuerryArray[1], dateArray, coinsHistoryArray[1]),
+        Currency(coinQuerryArray[2], dateArray, coinsHistoryArray[2])
     ]
 
     DailyEmailDate = datetime.datetime.min

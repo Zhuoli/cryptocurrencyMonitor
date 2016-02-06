@@ -69,4 +69,8 @@ class CurrencyQuery:
 
     # Return price
     def GetPrice(self):
+
+        # Retrieve Price if hasn't
+        if self.USD == 0:
+            self.Refresh()
         return self.USD

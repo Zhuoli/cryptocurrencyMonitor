@@ -1,3 +1,4 @@
+
 '''
 Created on Nov 8, 2015
 
@@ -137,3 +138,50 @@ class DataKeeper:
             spamwriter = csv.writer(csvfile, delimiter=',',
                                     quotechar='|', quoting=csv.QUOTE_MINIMAL)
             spamwriter.writerow(rows)
+
+
+class CSVManager:
+
+    DELIMITER = ','
+    
+    def __init__(self, coinnames, path):
+        self.filename = path
+
+    def Read(self, startRow, startCol):
+        result = [[]]
+
+        # Return empty array if path not exist
+        if not os.path.isfile(self.filename):
+            return result
+
+        # Open csv file
+        with open(self.filename,'r') as csvfile:
+            reader = csv.reader(csvfile, delimiter= DataKeeper.DELIMITER,
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
+            # Return empty array if data is empty
+            if len(reader) == 0 or len(reader[0]) == 0:
+                return result;
+
+            Data2DArray = self.RrverseAntiClockWise90Degree(reader)
+            Data2DArray = self.ReverseOrder(Data2DArray)
+
+            result = Data2DArray[startCol : [startRow]]
+            return result
+
+    def RrverseAntiClockWise90Degree(self, TwoDArray):
+
+        for row in range(len(TwoDArray)):
+            for col in range(row, len(TwoDArray[row])):
+                TwoDArray[row][col], TwoDArray[col][row] = TwoDArray[col][row], TwoDArray[row][col]
+
+        TwoDArray = TwoDArray[::-1]
+        return TwoDArray
+
+
+arr = [1,2,3]
+manager = CSVManager('','')
+
+
+
+
