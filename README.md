@@ -1,1 +1,3 @@
 # cryptocurrencyMonitor
+
+V 2
