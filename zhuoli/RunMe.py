@@ -18,31 +18,12 @@ from Email import Email
 from Errors import Log
 from Currency import Currency
 from Currency import CurrencyQuery
+from APIConnector.APIConnectorBase import *
+from APIConnector.CoinMarketCapAPI import *
 
 
 DATA_PATH = Constant.DATA_ROOT + '/priceLog.csv'
 
-BITCOIN = 'BitCoin'
-LITECOIN = 'LITECOIN'
-DOGECOIN = 'DogeCoin'
-
-COINS = {
-        BITCOIN  : "http://coinmarketcap-nexuist.rhcloud.com/api/btc/price",
-        LITECOIN : "http://coinmarketcap-nexuist.rhcloud.com/api/ltc/price",
-        DOGECOIN : "http://coinmarketcap-nexuist.rhcloud.com/api/doge/price"
-        }
-
-BUYPRICE = {
-        BITCOIN : 350,
-        LITECOIN : 3.10,
-        DOGECOIN : 0.00133941
-}
-
-SELLPRICE = {
-        BITCOIN : 440,
-        LITECOIN : 3.5,
-        DOGECOIN : 1.8
-}
 
 RECIPIENT = 'zhuoliseattle@gmail.com'
 SLEEP_SECONDS = 3 #10 * 60 # Refresh price interval
@@ -68,8 +49,8 @@ def main():
         os.makedirs(Constant.DATA_ROOT)
         
     #TODO change hardcode password to console input
-    pw = 'lzl8482617' #input("\nEnter password:\n");
-    email = Email("robotonyszu@gmail.com", pw)
+    pw = 'gsbsEf*Y2TKwkhje7xeq' #input("\nEnter password:\n");
+    email = Email("digitcurrencymonitor@gmail.com", pw)
     try:
         email.Authenticate()
     except Exception as e:
@@ -93,24 +74,20 @@ def main():
 # Monitor the real time currency
 def Monitor(email):
 
-
     num = int(MONITOR_WINDOW / SLEEP_SECONDS);
-    
-    #Currency Object Init
-    coinnames = [BITCOIN, LITECOIN, DOGECOIN]
 
-    # Init coin querry instances
-    coinQuerryArray = [
-        CurrencyQuery(BITCOIN, COINS[BITCOIN]),
-        CurrencyQuery(LITECOIN, COINS[LITECOIN]),
-        CurrencyQuery(DOGECOIN, COINS[DOGECOIN])
-    ]
+    # Initialize API Connector
+    digitCoinApi = CoinMarketCapAPI();
+
+    # Get all goods name
+    goodsNames = digitCoinApi.GetAllGoodsNames();
 
     # Querry current coin price from APIs
-    prices = list(map(lambda querry : querry.GetPrice(), coinQuerryArray)) 
+    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
 
     # Retrieve history coin price from disk csv file
-    CSVReader = DataKeeper(coinnames, DATA_PATH)
+    CSVReader = DataKeeper(goodsNames, DATA_PATH)
+
     coinsHistoryArray, dateArray = CSVReader.InitCoinsHistory(num, prices)
 
     currencyList = [
