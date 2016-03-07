@@ -8313,89 +8313,19 @@ TypeError: object of type 'map' has no len()
     raise Exception('Not equal');
 Exception: Not equal
 "
-2016-03-04 05:54 : "Invalid col format: DateBitCoin price $LITECOIN price $DogeCoin price $"
-2016-03-04 06:01 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/Email.py", line 58, in send_email
-    ConsoleUtilities.WriteLine('successfully sent the mail')
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/ConsoleUtilities.py", line 8, in WriteLine
-    print(args);
+2016-03-06 21:06 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/RunMe.py", line 66, in main
+    Monitor(email)
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/RunMe.py", line 96, in Monitor
+    coinsHistoryArray, dateArray = CSVReader.InitCoinsHistory(num, namePricePairs)
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/DataKeeper.py", line 73, in InitCoinsHistory
+    price2DArray = [[] for price in prices]
+NameError: name 'prices' is not defined
+"
+2016-03-06 21:09 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/RunMe.py", line 66, in main
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/RunMe.py", line 96, in Monitor
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/DataKeeper.py", line 63, in InitCoinsHistory
+  File "/Users/zhuoli/Documents/DigitCurrency/cryptocurrencyMonitor/zhuoli/ConsoleUtilities.py", line 8, in WriteLine
 BrokenPipeError: [Errno 32] Broken pipe
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 85, in main
-    Monitor(email)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 143, in Monitor
-    email.send_email(RECIPIENT, currencyInstance.name + ' price increased ' + "%.3f" % (rate*100) + '%', body)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/Email.py", line 60, in send_email
-    ConsoleUtilities.WriteLine('failed send the mail')
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/ConsoleUtilities.py", line 8, in WriteLine
-    print(args);
-BrokenPipeError: [Errno 32] Broken pipe
-"
-2016-03-05 05:33 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 66, in main
-    Monitor(email)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in Monitor
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in <lambda>
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/APIConnector/CoinMarketCapAPI.py", line 52, in RetrievePriceForGoods
-    js = json.load(jsonResponse)
-  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/json/__init__.py", line 265, in load
-    return loads(fp.read(),
-AttributeError: 'str' object has no attribute 'read'
-"
-2016-03-05 05:34 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 66, in main
-    Monitor(email)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in Monitor
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in <lambda>
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/APIConnector/CoinMarketCapAPI.py", line 52, in RetrievePriceForGoods
-    js = json.load(jsonResponse)
-  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/json/__init__.py", line 265, in load
-    return loads(fp.read(),
-AttributeError: 'str' object has no attribute 'read'
-"
-2016-03-05 05:38 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 66, in main
-    Monitor(email)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in Monitor
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in <lambda>
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/APIConnector/CoinMarketCapAPI.py", line 52, in RetrievePriceForGoods
-    js = json.load(jsonResponse)
-  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/json/__init__.py", line 265, in load
-    return loads(fp.read(),
-AttributeError: 'str' object has no attribute 'read'
-"
-2016-03-05 05:40 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 66, in main
-    Monitor(email)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in Monitor
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in <lambda>
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/APIConnector/CoinMarketCapAPI.py", line 52, in RetrievePriceForGoods
-    js = json.load(jsonResponse)
-  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/json/__init__.py", line 265, in load
-    return loads(fp.read(),
-AttributeError: 'str' object has no attribute 'read'
-"
-2016-03-05 05:43 : "CoinMonitor Restarted due to exceptionTraceback (most recent call last):
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 66, in main
-    Monitor(email)
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in Monitor
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/RunMe.py", line 86, in <lambda>
-    prices = list(map(lambda goodsname : digitCoinApi.RetrievePriceForGoods(goodsname), goodsNames))
-  File "/Users/zhuoli/Documents/DigitCurrency/IntelliJ-DigitCoinAnalyser/zhuoli/APIConnector/CoinMarketCapAPI.py", line 52, in RetrievePriceForGoods
-    js = json.loads(jsonResponse)
-  File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/json/__init__.py", line 265, in load
-    return loads(fp.read(),
-AttributeError: 'str' object has no attribute 'read'
 "
