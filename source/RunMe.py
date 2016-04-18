@@ -49,7 +49,7 @@ def main():
         os.makedirs(Constant.DATA_ROOT)
         
     #TODO change hardcode password to console input
-    pw = 'gsbsEf*Y2TKwkhje7xeq' #input("\nEnter password:\n");
+    pw = input("\nEnter password:\n");
     email = Email("digitcurrencymonitor@gmail.com", pw)
     try:
         email.Authenticate()
