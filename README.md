@@ -1,3 +1,3 @@
 # cryptocurrencyMonitor
 
-V 2
+** Cryptocurrency price monitor module 
